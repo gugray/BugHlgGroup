@@ -1,0 +1,114 @@
+﻿@clrFill: #004bcc;
+@clrFillDark: darken(@clrFill, 20%);
+@clrFillLight: lighten(@clrFill, 55%);
+@clrFillLightest: lighten(@clrFill, 58%);
+@clrText: #505050;
+//@clrText: @clrFillDark;
+@clrLight: #c0c0c0;
+@fntSizeFull: 12pt;
+@fntSizeLarger: 14pt;
+@fntSizeLargest: 17pt;
+@fntSizeSmaller: 11pt;
+@fntSizeHeaderLarge: 21pt;
+@fntFamily: "San Francisco", Tahoma, sans-serif;
+
+@bodyPadding: 10px;
+@headerHeight: 48px;
+@footerHeight: 32px;
+@menuWidth: 220px;
+
+.floatingBlock() {
+  position: relative; float: left; box-sizing: border-box; width: 100%;
+  height: auto; overflow-y: auto;
+}
+
+* { margin: 0; padding: 0; border: 0; }
+div, p, h1, h2, h3, ul, ol, blockquote,
+header, footer, main, article, section {
+  .floatingBlock();
+}
+html { height: 100%; font-size: @fntSizeFull; font-family: @fntFamily; overflow-y: scroll; overflow-x: hidden; }
+body { position: absolute; width: 100%; height: auto; min-height: 100%; color: @clrText; padding: @bodyPadding; box-sizing: border-box; }
+
+header.page {
+  background-color: @clrFill; color: white; padding: 5px 10px; height: @headerHeight;
+  h1 { font-size: @fntSizeHeaderLarge; font-weight: bold; display: inline-block; width: auto;
+    a { text-decoration: none; color: inherit; }
+  }
+  p.tagline { font-size: @fntSizeSmaller; display: inline-block; padding-top: 10px; margin-left: 20px; width: auto; }
+}
+
+footer.page {
+  text-align: center; padding-top: 0px; height: @footerHeight; position: absolute; bottom: 0;
+  small { font-size: @fntSizeSmaller; }
+}
+
+nav.page {
+  .floatingBlock(); position: absolute; width: @menuWidth; top: @headerHeight + 2 * @bodyPadding; z-index: 1;
+  border-right: 1px solid @clrLight; padding-right: @bodyPadding; min-height: 50%;
+  a {
+    .floatingBlock();
+    text-decoration: none; color: @clrFillDark; font-size: @fntSizeLarger;
+    padding: @bodyPadding;
+    &:hover { background-color: @clrFillLightest; }
+    &.selected { background-color: @clrFillLight; }
+  }
+  svg {
+    display: inline-block; width: 28px; height: 28px;
+    path { fill: @clrFillDark; }
+  }
+  label { display: inline-block; vertical-align: top; margin: 2px 0 0 10px; cursor: inherit; }
+}
+
+section.page {
+  padding-left: @menuWidth + @bodyPadding; padding-bottom: @footerHeight; margin-top: @bodyPadding;
+}
+
+.messageList .items {
+  list-style-type: none;
+  li {
+    .floatingBlock();
+    border-top: 1px solid @clrLight; padding: @bodyPadding 0; height: auto;
+    &:first-child { border-top: none; }
+  }
+  a {
+    .floatingBlock(); margin-bottom: 4px; width: auto; clear: both;
+    font-weight: bold; text-decoration: none; color: @clrFillDark;
+  }
+  p.details { margin-top: 6px; font-size: @fntSizeSmaller; color: #606060; }
+  span.author { font-weight: bold; }
+}
+
+header.list {
+  /*border-bottom: 1px solid @clrText;*/ padding: 0 0 10px 0; margin-bottom: 20px;
+  nav {
+    .floatingBlock(); width: auto; position: absolute; right: 0; top: 0;
+    span, a {
+      display: inline-block; padding: 0 8px 3px 8px; font-size: @fntSizeLarger;
+      &.selected { background-color: @clrFillLight; }
+    }
+    a {
+      color: @clrFillDark; text-decoration: none;
+      &:hover { background-color: @clrFillLightest; }
+    }
+    span { color: @clrText; cursor: default; }
+  }
+  .search {
+    width: 300px; background-color: @clrFillLightest; height: 28px; margin: 0 0 0 20px;
+    border-bottom: 1px solid @clrFillDark;
+    input {
+      display: block; font-family: inherit; color: inherit; font-size: inherit; background-color: inherit;
+      padding: 3px 30px 0 10px; width: 100%; box-sizing: border-box;
+    }
+    #btnSearch { 
+      width: 20px; height: 20px; display: block; position: absolute; right: 3px; top: 3px;
+      path { fill: @clrFillDark; }
+    }
+  }
+}
+
+label.navCrumb {
+  .floatingBlock(); width: auto;
+  font-size: @fntSizeLargest; font-weight: bold;
+  color: @clrFillDark; text-transform: uppercase;
+}
