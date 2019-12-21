@@ -83,6 +83,7 @@ namespace SiteBuilder
             ids.Sort((a, b) => b.CompareTo(a));
             StringBuilder sbList = new StringBuilder();
             int page = 1;
+            int pageCount = ids.Count / pageSize + 1;
             for (int i = 0; i < ids.Count; ++i)
             {
                 Email email = data.IdToEmail[ids[i]];
@@ -91,24 +92,52 @@ namespace SiteBuilder
                 sbItem.Replace("{{subject}}", esc(email.Subject));
                 sbItem.Replace("{{snippet}}", esc(email.MsgSnippet));
                 sbItem.Replace("{{author}}", esc(email.AuthorName));
-                sbItem.Replace("{{date}}", esc(email.UtcDateTime.ToLongDateString() + " " + email.UtcDateTime.ToShortTimeString()));
+                sbItem.Replace("{{date}}", esc(email.EasternDateTime.ToString("MMMM d, yyyy") + " " + email.EasternDateTime.ToShortTimeString()));
                 sbList.Append(sbItem);
                 if (i % pageSize == 0 && i > 0)
                 {
-                    writeMessageListPage(page, sbList.ToString());
+                    writeMessageListPage(page, pageCount, sbList.ToString());
                     sbList.Clear();
                     ++page;
                 }
             }
-            if (sbList.Length > 0) writeMessageListPage(page, sbList.ToString());
+            if (sbList.Length > 0) writeMessageListPage(page, pageCount, sbList.ToString());
         }
 
-        void writeMessageListPage(int page, string strListItems)
+        string buildPageLinks(int page, int pageCount, string urlFormat)
+        {
+            StringBuilder sb = new StringBuilder();
+            if (page == 1) sb.Append("<span>«</span> <span class='selected'>1</span> ");
+            else
+            {
+                sb.Append("<a href='" + string.Format(urlFormat, page - 1) + "'>«</a> ");
+                sb.Append("<a href='" + string.Format(urlFormat, 1) + "'>1</a> ");
+            }
+            if (page > 3) sb.Append("<span>…</span> ");
+            int i = page - 1;
+            if (i < 2) i = 2;
+            while (i <= page + 1 && i < pageCount)
+            {
+                if (i != page) sb.Append("<a href='" + string.Format(urlFormat, i) + "'>" + i + "</a> ");
+                else sb.Append("<span class='selected'>" + i + "</span> ");
+                ++i;
+            }
+            if (i < pageCount) sb.Append("<span>…</span> ");
+            if (page == pageCount) sb.Append("<span class='selected'>" + pageCount + "</span> <span>»</span> ");
+            else
+            {
+                sb.Append("<a href='" + string.Format(urlFormat, pageCount) + "'>" + pageCount + "</a> ");
+                sb.Append("<a href='" + string.Format(urlFormat, page + 1) + "'>»</a> ");
+            }
+            return sb.ToString();
+        }
+
+        void writeMessageListPage(int page, int pageCount, string strListItems)
         {
             // Main section
             StringBuilder sbList = new StringBuilder(snips["messageList"]);
             // Navigation
-            // TO-DO
+            sbList.Replace("{{pageNav}}", buildPageLinks(page, pageCount, "/messages/page-{0}"));
             // Items
             sbList.Replace("{{items}}", strListItems);
             // Page

@@ -12,6 +12,8 @@ namespace SiteBuilder
 {
     class EmailParser
     {
+        readonly TimeZoneInfo easternZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
+
         public Email Parse(string json)
         {
             dynamic jMsg = JsonConvert.DeserializeObject(json);
@@ -34,6 +36,7 @@ namespace SiteBuilder
             res.TextBody = msg.TextBody;
             res.HtmlBody = msg.HtmlBody;
             res.UtcDateTime = msg.Date.UtcDateTime;
+            res.EasternDateTime = TimeZoneInfo.ConvertTimeFromUtc(res.UtcDateTime, easternZone);
             return res;
         }
     }

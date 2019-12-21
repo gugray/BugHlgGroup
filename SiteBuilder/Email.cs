@@ -14,6 +14,7 @@ namespace SiteBuilder
         public string From;
         public string MsgSnippet;
         public DateTime UtcDateTime;
+        public DateTime EasternDateTime;
         public string HtmlBody;
         public string TextBody;
         public int TopicId;
