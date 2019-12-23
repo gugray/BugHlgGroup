@@ -1,0 +1,24 @@
+﻿<header class="message">
+  <div class="navCrumb">Messages » <h2>{{subject}}</h2></div>
+  <nav>
+    {{prev}}
+    <span>#{{msgId}}</span>
+    {{next}}
+  </nav>
+</header>
+<article>
+  <div class="msgMeta">
+    <b>From:</b> {{from}}<br />
+    <b>Date:</b> {{date}}<br />
+    <b>Subject:</b> {{subject}}<br />
+  </div>
+  <div class="msgBody {{bodyClass}}">{{body}}</div>
+</article>
+<footer class="message">
+  &nbsp;
+  <nav>
+    {{prev}}
+    <span>#{{msgId}}</span>
+    {{next}}
+  </nav>
+</footer>

@@ -131,6 +131,7 @@
     <None Include="src\style.less" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="src\message.html" />
     <Content Include="src\messageList.html" />
     <Content Include="src\index.html" />
     <Content Include="src\messageListItem.html" />

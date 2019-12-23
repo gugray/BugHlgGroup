@@ -25,6 +25,7 @@ namespace SiteBuilder
             {
                 string json = File.ReadAllText(f.FullName);
                 var email = emailParser.Parse(json);
+                if (email == null) continue;
                 IdToEmail[email.MsgId] = email;
             }
         }

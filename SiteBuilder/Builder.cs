@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace SiteBuilder
 {
@@ -29,6 +30,7 @@ namespace SiteBuilder
         {
             recursiveDelete(new DirectoryInfo(wwwRoot));
             buildMessageList();
+            buildMessages();
         }
 
         static string esc(string str)
@@ -155,6 +157,82 @@ namespace SiteBuilder
                 path = Path.Combine(path, "messages");
                 File.WriteAllText(Path.Combine(path, "index.html"), strPage, Encoding.UTF8);
             }
+        }
+
+        void buildMessages()
+        {
+            List<int> ids = new List<int>();
+            ids.AddRange(data.IdToEmail.Keys);
+            ids.Sort((a, b) => b.CompareTo(a));
+            for (int i = 0; i < ids.Count; ++i)
+            {
+                Email email = data.IdToEmail[ids[i]];
+                writeMessage(email, i > 0 ? ids[i - 1] : -1, i < ids.Count - 1 ? ids[i + 1] : -1);
+            }
+        }
+
+        readonly Regex reUrl = new Regex(@"(ht|f)tp(s?)\:\/\/[0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*(:(0-9)*)*(\/?)([a-zA-Z0-9\-\.\?\,\'\/\\\+&%\$#_=;]*)?");
+
+        string decorateLinks(string plainEncoded)
+        {
+            var ms = reUrl.Matches(plainEncoded);
+            if (ms.Count == 0) return plainEncoded;
+            List<Match> msList = new List<Match>();
+            foreach (Match m in ms) msList.Add(m);
+            msList.Sort((a, b) => b.Index.CompareTo(a.Index));
+            foreach (Match m in msList)
+            {
+                string hrefStr = "<a href='" + m.Value.Replace("&amp;", "&") + "'>" + m.Value + "</a>";
+                plainEncoded =
+                    plainEncoded.Substring(0, m.Index) +
+                    hrefStr +
+                    plainEncoded.Substring(m.Index + m.Length);
+            }
+            return plainEncoded;
+        }
+
+        void writeMessage(Email email, int prevId, int nextId)
+        {
+            // Render message
+            StringBuilder sb = new StringBuilder(snips["message"]);
+            sb.Replace("{{msgId}}", email.MsgId.ToString());
+            // Pre/next
+            if (prevId == -1) sb.Replace("{{prev}}", "<span>«</span>");
+            else sb.Replace("{{prev}}", "<a href='/messages/" + prevId + "'>«</a>");
+            if (nextId == -1) sb.Replace("{{next}}", "<span>»</span>");
+            else sb.Replace("{{next}}", "<a href='/messages/" + nextId + "'>»</a>");
+            // Meta
+            sb.Replace("{{subject}}", email.Subject.ToString());
+            sb.Replace("{{from}}", email.From);
+            sb.Replace("{{date}}", email.EasternDateTime.ToLongDateString() + " " + email.EasternDateTime.ToShortTimeString());
+            if (email.MsgId == 1038)
+            {
+                int jfds = 0;
+            }
+            // Body
+            if (email.HtmlBody != null)
+            {
+                sb.Replace("{{bodyClass}}", "msgHtml");
+                sb.Replace("{{body}}", email.HtmlBody);
+            }
+            else
+            {
+                sb.Replace("{{bodyClass}}", "msgPlain");
+                string body = email.TextBody ?? "";
+                body = body.TrimStart();
+                body = esc(body);
+                body = decorateLinks(body);
+                sb.Replace("{{body}}", body);
+            }
+
+            // Assemble page
+            string strPage = getPage("messages", "messageView", sb.ToString());
+
+            // Save in regular location
+            string path = Path.Combine(wwwRoot, "messages/" + email.MsgId);
+            Directory.CreateDirectory(path);
+            string fn = Path.Combine(path, "index.html");
+            File.WriteAllText(fn, strPage, Encoding.UTF8);
         }
     }
 }

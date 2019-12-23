@@ -3,6 +3,7 @@
 @clrFillLight: lighten(@clrFill, 55%);
 @clrFillLightest: lighten(@clrFill, 58%);
 @clrText: #505050;
+@clrMeta: #686868;
 //@clrText: @clrFillDark;
 @clrLight: #c0c0c0;
 @fntSizeFull: 12pt;
@@ -65,7 +66,7 @@ footer.page {
 
 nav.page {
   .floatingBlock(); position: absolute; width: @menuWidth; top: @headerHeight + 2 * @bodyPadding; z-index: 1;
-  border-right: 1px solid @clrLight; padding-right: @bodyPadding; min-height: 50%;
+  border-right: 1px solid @clrLight; padding-right: @bodyPadding; min-height: 90%;
   a {
     .floatingBlock();
     text-decoration: none; color: @clrFillDark; font-size: @fntSizeLarger;
@@ -81,6 +82,7 @@ section.page {
   padding-left: @menuWidth + @bodyPadding; padding-bottom: @footerHeight; margin-top: @bodyPadding;
 }
 
+// Content section: message list
 .messageList .items {
   list-style-type: none;
   li {
@@ -96,20 +98,9 @@ section.page {
   span.author { font-weight: bold; }
 }
 
-header.list {
-  padding: 0 0 10px 0; margin-bottom: 20px;
-  nav {
-    .floatingBlock(); width: auto; position: absolute; right: 0; top: 0;
-    span, a {
-      display: inline-block; padding: 0 8px 3px 8px; font-size: @fntSizeLarger;
-      &.selected { background-color: @clrFillLight; }
-    }
-    a {
-      color: @clrFillDark; text-decoration: none;
-      &:hover { background-color: @clrFillLightest; }
-    }
-    span { color: @clrText; cursor: default; }
-  }
+header.list,
+header.message {
+  padding: 0 0 10px 0; margin-bottom: 20px; border-bottom: 1px solid transparent;
   .search {
     width: 410px; background-color: @clrFillLightest; height: 28px; margin: 0 0 0 20px;
     border-bottom: 1px solid @clrFillDark;
@@ -123,8 +114,53 @@ header.list {
   }
 }
 
-label.navCrumb {
+header.list,
+footer.list,
+header.message,
+footer.message {
+  nav {
+    .floatingBlock(); width: auto; position: absolute; right: 0; top: 0;
+    span, a {
+      display: inline-block; padding: 0 8px 3px 8px; font-size: @fntSizeLarger;
+      &.selected { background-color: @clrFillLight; }
+    }
+    a {
+      color: @clrFillDark; text-decoration: none;
+      &:hover { background-color: @clrFillLightest; }
+    }
+    span { color: @clrText; cursor: default; }
+  }
+}
+
+header.message { border-bottom: 1px solid @clrLight; margin-bottom: 5px; }
+footer.message,
+footer.list {
+  margin-bottom: 20px; border-top: 1px solid @clrLight; height: 36px;
+  nav { bottom: 0; top: unset; }
+}
+
+
+.navCrumb {
   .floatingBlock(); width: auto;
   font-size: @fntSizeLargest; font-weight: bold;
   color: @clrFillDark; text-transform: uppercase;
+}
+
+// Content section: one message
+.messageView {
+  h2 { 
+    display: inline; width: auto; float: none; position: static; 
+    font-weight: normal;  font-size: @fntSizeLargest; color: inherit; text-transform: none;
+  }
+  .msgMeta { margin: 5px 0 20px 0; color: @clrMeta; }
+  .msgPlain { white-space: pre-wrap; }
+  .msgBody {
+    margin-bottom: 20px;
+    a { color: @clrFill; text-decoration: none; &:hover { text-decoration: underline;  } }
+  }
+  .msgHtml {
+    .link-enhancr-element { display: none !important; }
+    blockquote { margin-left: 0 !important; }
+    div { overflow-x: hidden; overflow-y: hidden !important; }
+  }
 }

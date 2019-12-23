@@ -33,11 +33,25 @@ namespace SiteBuilder
 
         static void onSourceChanged(object sender, FileSystemEventArgs e)
         {
-            if (!e.FullPath.EndsWith(".html") && !e.FullPath.EndsWith(".less")) return;
-            builder = new Builder(data);
-            builder.Build();
-            buildStyle();
-            Console.WriteLine("Rebuilt site.");
+            try
+            {
+                if (e.FullPath.EndsWith(".less"))
+                {
+                    buildStyle();
+                    Console.WriteLine("Rebuilt style.");
+                    return;
+                }
+                if (e.FullPath.EndsWith(".html"))
+                {
+                    builder = new Builder(data);
+                    builder.Build();
+                    Console.WriteLine("Rebuilt site.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
         }
 
 
