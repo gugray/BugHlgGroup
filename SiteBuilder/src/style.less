@@ -117,7 +117,9 @@ header.message {
 header.list,
 footer.list,
 header.message,
-footer.message {
+footer.message,
+header.album,
+footer.album {
   nav {
     .floatingBlock(); width: auto; position: absolute; right: 0; top: 0;
     span, a {
@@ -134,7 +136,8 @@ footer.message {
 
 header.message { border-bottom: 1px solid @clrLight; margin-bottom: 5px; }
 footer.message,
-footer.list {
+footer.list,
+footer.album {
   margin-bottom: 20px; border-top: 1px solid @clrLight; height: 36px;
   nav { bottom: 0; top: unset; }
 }
@@ -147,7 +150,8 @@ footer.list {
 }
 
 // Content section: one message
-.messageView {
+// Content section: one album
+.messageView, .album {
   h2 { 
     display: inline; width: auto; float: none; position: static; 
     font-weight: normal;  font-size: @fntSizeLargest; color: inherit; text-transform: none;
@@ -164,3 +168,35 @@ footer.list {
     div { overflow-x: hidden; overflow-y: hidden !important; }
   }
 }
+
+// Content section: one album
+.album .photoList {
+  list-style-type: none;
+  li {
+    .floatingBlock();
+    border-top: 1px solid @clrLight; padding: 2*@bodyPadding 0 @bodyPadding 0; height: auto;
+    &:first-child { border-top: none; }
+    img { max-width: 100%; }
+    span.author { font-weight: bold; }
+    p.details { margin-bottom: @bodyPadding; }
+  }
+}
+
+
+.albumList .items {
+  list-style-type: none;
+  li {
+    .floatingBlock();
+    border-top: 1px solid @clrLight; padding: @bodyPadding 0 @bodyPadding+3px 0; height: auto;
+    &:first-child { border-top: none; }
+  }
+  a.name {
+    .floatingBlock(); margin-bottom: 4px; width: auto; clear: both;
+    font-weight: bold; text-decoration: none; color: @clrFillDark;
+  }
+  p.details { margin: 3px 0 6px 0; font-size: @fntSizeSmaller; color: #606060; }
+  span.author { font-weight: bold; }
+  .tinyThumbs img { display: inline-block; margin: 0 @bodyPadding 3px 0; }
+  .tinyThumbs a { color: transparent; }
+}
+

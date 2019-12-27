@@ -10,10 +10,13 @@ namespace SiteBuilder
     class GroupData
     {
         public readonly Dictionary<int, Email> IdToEmail = new Dictionary<int, Email>();
+        public readonly List<Album> Albums;
 
         public GroupData(string path)
         {
             parseEmails(path);
+            PhotoParser photoParser = new PhotoParser(Path.Combine(path, "photos"));
+            Albums = photoParser.ParseAlbums();
         }
 
         void parseEmails(string path)
