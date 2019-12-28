@@ -16,6 +16,7 @@ namespace SiteBuilder
         public string CreatedBy;
         public int Width;
         public int Height;
+        public int SizeKB;
 
         public string LocalFileFullPath;
         public string LocalFileName;

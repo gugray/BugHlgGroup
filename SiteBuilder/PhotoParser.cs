@@ -69,6 +69,8 @@ namespace SiteBuilder
             album.Slug = dir.Name.Substring(dir.Name.IndexOf('-') + 1);
             FileInfo[] files = dir.GetFiles();
             dynamic jPhotos = JsonConvert.DeserializeObject(File.ReadAllText(Path.Combine(dir.FullName, "photos-0.json")));
+            long sizeMBTimesTen = 0;
+            long sizeKB = 0;
             foreach (dynamic jPhoto in jPhotos)
             {
                 Photo photo = new Photo
@@ -95,8 +97,13 @@ namespace SiteBuilder
                 var fi = new FileInfo(photo.LocalFileFullPath);
                 photo.LocalFileName = fi.Name;
                 album.Photos.Add(photo);
+                sizeMBTimesTen += fi.Length * 10 / (1024 * 1024);
+                photo.SizeKB = (int)fi.Length / 1024;
+                sizeKB += photo.SizeKB;
             }
             album.Photos.Sort((a, b) => b.CreatedEastern.CompareTo(a.CreatedEastern));
+            album.SizeMB = (decimal)sizeMBTimesTen / 10;
+            album.SizeKB = (int)sizeKB;
         }
     }
 }

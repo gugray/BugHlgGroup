@@ -14,6 +14,8 @@ namespace SiteBuilder
         public DateTime CreatedEastern;
         public string CreatedBy;
         public string Slug;
+        public int SizeKB;
+        public decimal SizeMB;
         public List<Photo> Photos = new List<Photo>();
     }
 }

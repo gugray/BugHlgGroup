@@ -199,7 +199,7 @@ namespace SiteBuilder
             // Render message
             StringBuilder sb = new StringBuilder(snips["message"]);
             sb.Replace("{{msgId}}", email.MsgId.ToString());
-            // Pre/next
+            // Prev/next
             if (prevId == -1) sb.Replace("{{prev}}", "<span>«</span>");
             else sb.Replace("{{prev}}", "<a href='/messages/" + prevId + "'>«</a>");
             if (nextId == -1) sb.Replace("{{next}}", "<span>»</span>");
@@ -248,6 +248,10 @@ namespace SiteBuilder
                 sbItem.Replace("{{author}}", esc(album.CreatedBy));
                 sbItem.Replace("{{date}}", album.CreatedEastern.ToString("MMMM d, yyyy"));
                 sbItem.Replace("{{photoCount}}", countStr);
+                if (album.SizeMB >= 1)
+                    sbItem.Replace("{{size}}", album.SizeMB.ToString() + "&nbsp;MB");
+                else
+                    sbItem.Replace("{{size}}", album.SizeKB.ToString() + "&nbsp;KB");
                 StringBuilder sbThumbs = new StringBuilder();
                 foreach (var photo in album.Photos)
                 {
@@ -267,7 +271,15 @@ namespace SiteBuilder
             return sb.ToString();
         }
 
-        void buildAlbum(Album album, string photosPath)
+        static string prettySizeKB(int kbytes)
+        {
+            if (kbytes < 1000) return kbytes + " KB";
+            int k = kbytes / 1000;
+            return k + "," + (kbytes - k * 1000).ToString() + " KB";
+
+        }
+
+        void buildAlbum(Album album, string prevSlug, string nextSlug, string photosPath)
         {
             // Create album folder
             string path = Path.Combine(photosPath, album.Slug);
@@ -282,6 +294,7 @@ namespace SiteBuilder
                 sbPhoto.Replace("{{src}}", "/photos/" + album.Slug + "/" + photo.LocalFileName);
                 sbPhoto.Replace("{{width}}", photo.Width.ToString());
                 sbPhoto.Replace("{{height}}", photo.Height.ToString());
+                sbPhoto.Replace("{{size}}", prettySizeKB(photo.SizeKB));
                 sbPhoto.Replace("{{alt}}", esc(photo.PhotoName));
                 sbPhoto.Replace("{{photoName}}", esc(photo.PhotoName));
                 if (!string.IsNullOrEmpty(photo.Description))
@@ -296,6 +309,16 @@ namespace SiteBuilder
             StringBuilder sbAlbum = new StringBuilder(snips["album"]);
             sbAlbum.Replace("{{album}}", esc(album.AlbumName));
             sbAlbum.Replace("{{photoList}}", sbList.ToString());
+            // Album meta
+            if (string.IsNullOrEmpty(album.Description)) sbAlbum.Replace("{{description}}", "n/a");
+            else sbAlbum.Replace("{{description}}", esc(album.Description));
+            sbAlbum.Replace("{{author}}", esc(album.CreatedBy));
+            sbAlbum.Replace("{{date}}", album.CreatedEastern.ToString("MMMM d, yyyy"));
+            // Prev/next: pages albums
+            if (prevSlug == null) sbAlbum.Replace("{{prev}}", "<span>Prev</span>");
+            else sbAlbum.Replace("{{prev}}", "<a href='/photos/" + prevSlug + "'>Prev</a>");
+            if (nextSlug == null) sbAlbum.Replace("{{next}}", "<span>Next</span>");
+            else sbAlbum.Replace("{{next}}", "<a href='/photos/" + nextSlug + "'>Next</a>");
             // Write page
             string strPage = getPage("photos", "album", sbAlbum.ToString());
             File.WriteAllText(Path.Combine(path, "index.html"), strPage);
@@ -318,8 +341,12 @@ namespace SiteBuilder
             string fn = Path.Combine(path, "index.html");
             File.WriteAllText(fn, strPage, Encoding.UTF8);
             // Build individual albums
-            foreach (var album in data.Albums)
-                buildAlbum(album, path);
+            for (int i = 0; i < data.Albums.Count; ++i)
+            {
+                string prevSlug = i < data.Albums.Count - 1 ? data.Albums[i + 1].Slug : null;
+                string nextSlug = i > 0 ? data.Albums[i - 1].Slug : null;
+                buildAlbum(data.Albums[i], prevSlug, nextSlug, path);
+            }
         }
     }
 }

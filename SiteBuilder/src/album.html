@@ -1,11 +1,14 @@
 ﻿<header class="album">
   <div class="navCrumb">Photos » <h2>{{album}}</h2></div>
   <nav>
-    {{prev}}
-    {{next}}
+    {{next}} · {{prev}}
   </nav>
 </header>
 <article>
+  <div class="meta">
+    <p class="description">Description: {{description}}</p>
+    <p class="details">Created by <span class="author">{{author}}</span> · {{date}}</p>
+  </div>
   <ul class="photoList">
     {{photoList}}
   </ul>
@@ -13,7 +16,6 @@
 <footer class="message">
   &nbsp;
   <nav>
-    {{prev}}
-    {{next}}
+    {{next}} · {{prev}}
   </nav>
 </footer>

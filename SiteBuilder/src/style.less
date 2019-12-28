@@ -170,15 +170,20 @@ footer.album {
 }
 
 // Content section: one album
-.album .photoList {
-  list-style-type: none;
-  li {
-    .floatingBlock();
-    border-top: 1px solid @clrLight; padding: 2*@bodyPadding 0 @bodyPadding 0; height: auto;
-    &:first-child { border-top: none; }
-    img { max-width: 100%; }
-    span.author { font-weight: bold; }
-    p.details { margin-bottom: @bodyPadding; }
+.album {
+  .meta {
+    margin-top: 2*@bodyPadding; margin-bottom: 2*@bodyPadding;
+    .author { font-weight: bold; }
+  }
+  .photoList {
+    list-style-type: none;
+    li {
+      .floatingBlock();
+      border-top: 1px solid @clrLight; padding: 2*@bodyPadding 0 @bodyPadding 0; height: auto;
+      img { max-width: 100%; margin-top: @bodyPadding; }
+      span.author { font-weight: bold; }
+      p.details { margin-bottom: @bodyPadding; }
+    }
   }
 }
 
