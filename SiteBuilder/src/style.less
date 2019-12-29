@@ -2,7 +2,7 @@
 @clrFillDark: #002666;
 @clrFillLight: lighten(@clrFill, 55%);
 @clrFillLightest: lighten(@clrFill, 58%);
-@clrText: #505050;
+@clrText: #404040;
 @clrMeta: #686868;
 //@clrText: @clrFillDark;
 @clrLight: #c0c0c0;
@@ -205,3 +205,14 @@ footer.album {
   .tinyThumbs a { color: transparent; }
 }
 
+.page.files {
+  h2 { 
+    font-size: @fntSizeLarger; color: inherit; font-family: inherit; 
+    border-top: 1px solid @clrLight; padding-top: 2*@bodyPadding; margin-bottom: @bodyPadding;
+    &:first-child { border-top: none; padding-top: @bodyPadding; }
+  }
+  p.fileLink a { font-size: @fntSizeFull; color: @clrFillDark; text-decoration: none; font-weight: bold; }
+  p.fileLink { margin-top: 2*@bodyPadding; }
+  div.fileList { margin-bottom: 2*@bodyPadding; margin-top: @bodyPadding; }
+  span.author { font-weight: bold; color: @clrMeta; }
+}

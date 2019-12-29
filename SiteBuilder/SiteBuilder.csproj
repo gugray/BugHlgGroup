@@ -123,7 +123,10 @@
     <Compile Include="Builder.cs" />
     <Compile Include="Email.cs" />
     <Compile Include="EmailParser.cs" />
+    <Compile Include="FilesParser.cs" />
     <Compile Include="GroupData.cs" />
+    <Compile Include="GroupFile.cs" />
+    <Compile Include="GroupFileFolder.cs" />
     <Compile Include="ImageResizer.cs" />
     <Compile Include="Photo.cs" />
     <Compile Include="PhotoParser.cs" />
@@ -140,6 +143,9 @@
     <Content Include="src\albumItem.html" />
     <Content Include="src\albumPhoto.html" />
     <Content Include="src\albumTinyThumb.html" />
+    <Content Include="src\fileItem.html" />
+    <Content Include="src\files.html" />
+    <Content Include="src\filesFolder.html" />
     <Content Include="src\message.html" />
     <Content Include="src\messageList.html" />
     <Content Include="src\index.html" />

@@ -11,12 +11,15 @@ namespace SiteBuilder
     {
         public readonly Dictionary<int, Email> IdToEmail = new Dictionary<int, Email>();
         public readonly List<Album> Albums;
+        public readonly List<GroupFileFolder> Files;
 
         public GroupData(string path)
         {
             parseEmails(path);
             PhotoParser photoParser = new PhotoParser(Path.Combine(path, "photos"));
             Albums = photoParser.ParseAlbums();
+            FilesParser filesParser = new FilesParser(Path.Combine(path, "files"));
+            Files = filesParser.ParseFiles();
         }
 
         void parseEmails(string path)
