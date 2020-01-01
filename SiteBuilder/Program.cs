@@ -47,10 +47,24 @@ namespace SiteBuilder
                     builder.Build();
                     Console.WriteLine("Rebuilt site.");
                 }
+                if (e.FullPath.EndsWith(".js"))
+                {
+                    copyScripts();
+                    Console.WriteLine("Copied scripts.");
+                }
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
+            }
+        }
+
+        static void copyScripts()
+        {
+            var di = new DirectoryInfo("./src");
+            foreach (var fi in di.GetFiles("*.js"))
+            {
+                File.Copy(fi.FullName, Path.Combine("../_www", fi.Name), true);
             }
         }
 
@@ -65,6 +79,7 @@ namespace SiteBuilder
                 builder = new Builder(data);
                 builder.Build();
                 buildStyle();
+                copyScripts();
                 if (!serve) return;
                 watcher = new FileSystemWatcher("./src");
                 watcher.IncludeSubdirectories = true;

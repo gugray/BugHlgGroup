@@ -10,12 +10,14 @@ namespace SiteBuilder
     class GroupData
     {
         public readonly Dictionary<int, Email> IdToEmail = new Dictionary<int, Email>();
+        public readonly List<EmailThread> Threads = new List<EmailThread>();
         public readonly List<Album> Albums;
         public readonly List<GroupFileFolder> Files;
 
         public GroupData(string path)
         {
             parseEmails(path);
+            collectThreads();
             PhotoParser photoParser = new PhotoParser(Path.Combine(path, "photos"));
             Albums = photoParser.ParseAlbums();
             FilesParser filesParser = new FilesParser(Path.Combine(path, "files"));
@@ -36,5 +38,33 @@ namespace SiteBuilder
             }
         }
 
+        void collectThreads()
+        {
+            foreach (var email in IdToEmail.Values)
+            {
+                if (email.PrevInTopic != 0) continue;
+                var thread = new EmailThread();
+                thread.FirstMessage = email;
+                Threads.Add(thread);
+            }
+            foreach (var thread in Threads)
+            {
+                var email = thread.FirstMessage;
+                while (true)
+                {
+                    thread.Messages.Add(email);
+                    if (email.NextInTopic == 0) break;
+                    email = IdToEmail[email.NextInTopic];
+                }
+                thread.Messages.Sort((a, b) => b.EasternDateTime.CompareTo(a.EasternDateTime));
+            }
+            Threads.Sort((a, b) => b.FirstMessage.EasternDateTime.CompareTo(a.FirstMessage.EasternDateTime));
+            for (int i = 0; i < Threads.Count; ++i)
+            {
+                Threads[i].ThreadId = Threads.Count - i;
+                foreach (var email in Threads[i].Messages) email.Thread = Threads[i];
+            }
+            Threads.Sort((a, b) => b.Messages[0].EasternDateTime.CompareTo(a.Messages[0].EasternDateTime));
+        }
     }
 }

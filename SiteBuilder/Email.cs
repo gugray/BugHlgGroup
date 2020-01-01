@@ -20,5 +20,6 @@ namespace SiteBuilder
         public int TopicId;
         public int NextInTopic;
         public int PrevInTopic;
+        public EmailThread Thread;
     }
 }

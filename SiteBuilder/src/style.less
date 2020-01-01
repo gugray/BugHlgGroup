@@ -6,6 +6,7 @@
 @clrMeta: #686868;
 //@clrText: @clrFillDark;
 @clrLight: #c0c0c0;
+@clrInverseBg: #a0a0a0;
 @fntSizeFull: 12pt;
 @fntSizeLarger: 14pt;
 @fntSizeLargest: 17pt;
@@ -15,6 +16,7 @@
 
 @bodyPadding: 10px;
 @headerHeight: 48px;
+@headerHeightMobile: 92px;
 @footerHeight: 32px;
 @menuWidth: 220px;
 
@@ -50,9 +52,13 @@ i.img.imgAbout:before {
 i.img.imgSearch:before {
   content: url("data:image/svg+xml; utf8, <svg style='fill: %23002666;' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 28.931 28.932' ><path d='M28.344,25.518l-6.114-6.115c1.486-2.067,2.303-4.537,2.303-7.137c0-3.275-1.275-6.355-3.594-8.672 C18.625,1.278,15.543,0,12.266,0C8.99,0,5.909,1.275,3.593,3.594C1.277,5.909,0.001,8.99,0.001,12.266 c0,3.276,1.275,6.356,3.592,8.674c2.316,2.316,5.396,3.594,8.673,3.594c2.599,0,5.067-0.813,7.136-2.303l6.114,6.115 c0.392,0.391,0.902,0.586,1.414,0.586c0.513,0,1.024-0.195,1.414-0.586C29.125,27.564,29.125,26.299,28.344,25.518z M6.422,18.111 c-1.562-1.562-2.421-3.639-2.421-5.846S4.86,7.983,6.422,6.421c1.561-1.562,3.636-2.422,5.844-2.422s4.284,0.86,5.845,2.422 c1.562,1.562,2.422,3.638,2.422,5.845s-0.859,4.283-2.422,5.846c-1.562,1.562-3.636,2.42-5.845,2.42S7.981,19.672,6.422,18.111z' /></svg>");
 }
+i.img.imgHamburger:before {
+  content: url("data:image/svg+xml; utf8, <svg style='fill: %23ffffff;' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 469.333 469.333'><path d='M53.333,106.667H416c29.417,0,53.333-23.927,53.333-53.333S445.417,0,416,0H53.333C23.917,0,0,23.927,0,53.333 S23.917,106.667,53.333,106.667z'/><path d='M416,181.333H53.333C23.917,181.333,0,205.26,0,234.667S23.917,288,53.333,288H416c29.417,0,53.333-23.927,53.333-53.333 S445.417,181.333,416,181.333z'/><path d='M416,362.667H53.333C23.917,362.667,0,386.594,0,416s23.917,53.333,53.333,53.333H416 c29.417,0,53.333-23.927,53.333-53.333S445.417,362.667,416,362.667z'/></svg>");
+}
 
 header.page {
   background-color: @clrFill; color: white; padding: 5px 10px; height: @headerHeight;
+  a#hamburger { display: none; }
   h1 { font-size: @fntSizeHeaderLarge; font-weight: bold; display: inline-block; width: auto;
     a { text-decoration: none; color: inherit; }
   }
@@ -83,7 +89,8 @@ section.page {
 }
 
 // Content section: message list
-.messageList .items {
+.page.messageList .items,
+.page.threadsList .items {
   list-style-type: none;
   li {
     .floatingBlock();
@@ -96,10 +103,17 @@ section.page {
   }
   p.details { margin-top: 6px; font-size: @fntSizeSmaller; color: #606060; }
   span.author { font-weight: bold; }
+  span.hidden { display: none; }
+  span.messageCount { 
+    display: inline-block; margin-left: @bodyPadding; padding: 0 @bodyPadding;
+    background-color: @clrInverseBg; color: white; border-radius: @bodyPadding;
+    font-size: @fntSizeSmaller;
+  }
 }
 
 header.list,
-header.message {
+header.message,
+header.thread {
   padding: 0 0 10px 0; margin-bottom: 20px; border-bottom: 1px solid transparent;
   .search {
     width: 410px; background-color: @clrFillLightest; height: 28px; margin: 0 0 0 20px;
@@ -118,6 +132,8 @@ header.list,
 footer.list,
 header.message,
 footer.message,
+header.thread,
+footer.thread,
 header.album,
 footer.album {
   nav {
@@ -132,16 +148,22 @@ footer.album {
     }
     span { color: @clrText; cursor: default; }
   }
+  .threadLink {
+    display: inline-block; position: absolute; left: 0; bottom: 0;
+    color: @clrFillDark; text-decoration: none; font-size: @fntSizeLarger;
+    &.hidden { display: none; }
+  }
 }
 
 header.message { border-bottom: 1px solid @clrLight; margin-bottom: 5px; }
+header.thread { border-bottom: 1px solid @clrLight; margin-bottom: 5px; }
 footer.message,
+footer.thread,
 footer.list,
 footer.album {
   margin-bottom: 20px; border-top: 1px solid @clrLight; height: 36px;
   nav { bottom: 0; top: unset; }
 }
-
 
 .navCrumb {
   .floatingBlock(); width: auto;
@@ -150,8 +172,12 @@ footer.album {
 }
 
 // Content section: one message
+// Content section: one thrread
 // Content section: one album
-.messageView, .album {
+.page.messageView,
+.page.threadView,
+.page.album {
+  margin-bottom: 3*@bodyPadding;
   h2 { 
     display: inline; width: auto; float: none; position: static; 
     font-weight: normal;  font-size: @fntSizeLargest; color: inherit; text-transform: none;
@@ -167,10 +193,14 @@ footer.album {
     blockquote { margin-left: 0 !important; }
     div { overflow-x: hidden; overflow-y: hidden !important; }
   }
+  .threadMessage {
+    border-top: 2px solid @clrFill;
+    &.first { border-top: none; }
+  }
 }
 
 // Content section: one album
-.album {
+.page.album {
   .meta {
     margin-top: 2*@bodyPadding; margin-bottom: 2*@bodyPadding;
     .author { font-weight: bold; }
@@ -186,6 +216,8 @@ footer.album {
     }
   }
 }
+
+.page.albumList { margin-bottom: 3*@bodyPadding; }
 
 
 .albumList .items {
@@ -214,5 +246,55 @@ footer.album {
   p.fileLink a { font-size: @fntSizeFull; color: @clrFillDark; text-decoration: none; font-weight: bold; }
   p.fileLink { margin-top: 2*@bodyPadding; }
   div.fileList { margin-bottom: 2*@bodyPadding; margin-top: @bodyPadding; }
+  div.filesList { margin-bottom: 3*@bodyPadding; }
   span.author { font-weight: bold; color: @clrMeta; }
+}
+
+.brk::before { content: " · ";  }
+
+// Responsive layout
+// Large iPhones: 414; iPhone 7: 375
+@media only screen and (max-width: 764px) {
+  header.page {
+    height: @headerHeightMobile;
+    a#hamburger {
+      display: block; position: relative; float: left; width: 28px; height: 28px; margin: 4px 8px 0 0;
+      i { width: 100%; height: 100%; }
+    }
+    h1 {
+      a { text-decoration: none; color: inherit; }
+    }
+    p.tagline { 
+      position: relative; float: left; clear: both; margin-left: 38px;
+    }
+  }
+  nav.page {
+    position: absolute; top: 56px; bottom: unset; padding-right: 0; min-height: unset;
+    border: 2px solid @clrFill; background-color: white;
+    display: none; &.visible { display: block; }
+  }
+  section.page {
+    padding: 0;
+  }
+  header.list,
+  header.message,
+  header.thread {
+    .search { width: 100%; margin: 10px 0 5px 0; }
+  }
+  header.list,
+  header.message,
+  header.thread,
+  header.album {
+    nav { position: relative; clear: both; float: right; }
+  }
+  footer.list,
+  footer.message,
+  footer.thread,
+  footer.album {
+    height: auto;
+    nav { position: relative; clear: both; float: right; }
+    .threadLink { position: relative; clear: both; float: left; }
+  }
+  .brk::before { content: "\A";  }
+  .brk { white-space: pre; }
 }

@@ -120,6 +120,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Album.cs" />
+    <Compile Include="Builder.Photos.cs" />
+    <Compile Include="Builder.Files.cs" />
+    <Compile Include="Builder.Messages.cs" />
     <Compile Include="Builder.cs" />
     <Compile Include="Email.cs" />
     <Compile Include="EmailParser.cs" />
@@ -132,6 +135,7 @@
     <Compile Include="PhotoParser.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="EmailThread.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -143,12 +147,17 @@
     <Content Include="src\albumItem.html" />
     <Content Include="src\albumPhoto.html" />
     <Content Include="src\albumTinyThumb.html" />
+    <Content Include="src\bug-hlg.js" />
     <Content Include="src\fileItem.html" />
     <Content Include="src\files.html" />
     <Content Include="src\filesFolder.html" />
+    <Content Include="src\threadMessage.html" />
+    <Content Include="src\thread.html" />
     <Content Include="src\message.html" />
+    <Content Include="src\threadList.html" />
     <Content Include="src\messageList.html" />
     <Content Include="src\index.html" />
+    <Content Include="src\threadListItem.html" />
     <Content Include="src\messageListItem.html" />
     <Content Include="src\albumList.html" />
   </ItemGroup>

@@ -59,6 +59,7 @@ namespace SiteBuilder
             var msg = MimeMessage.Load(rawEmailStream);
             res.TextBody = msg.TextBody;
             res.HtmlBody = msg.HtmlBody;
+            if (res.TextBody != null) res.TextBody = res.TextBody.TrimEnd();
             htmlBodyHacks(res);
             if (res.TextBody == null) ++notext;
             res.UtcDateTime = msg.Date.UtcDateTime;
@@ -84,7 +85,6 @@ namespace SiteBuilder
                 {
                     var multipart = iter.Parent as Multipart;
                     var part = iter.Current as MimePart;
-                    int jfkds = 0;
                 }
             }
         }
