@@ -12,6 +12,14 @@ namespace SiteBuilder
         const int pageSize = 100;
         const int tinyThumbHeight = 48;
         const int tinyThumbQuality = 90;
+        const string titleHome = "Bug HLG - Mailing List Archive";
+        const string titleMessagesPage = "Messages - Page {0} - Bug HLG";
+        const string titleMessagePage = "{0} - Message - Bug HLG";
+        const string titleThreadsPage = "Threads - Page {0} - Bug HLG";
+        const string titleThreadPage = "{0} - Thread - Bug HLG";
+        const string titleFilesPage = "Files - Bug HLG";
+        const string titlePhotosPage = "Photos - Bug HLG";
+        const string titlePhotoPage = "{0} - Album - Bug HLG";
 
         readonly ImageResizer resizer = new ImageResizer(tinyThumbQuality);
         readonly GroupData data;
@@ -64,7 +72,7 @@ namespace SiteBuilder
             }
         }
 
-        string getPage(string menu, string mainClass, string mainContent)
+        string getPage(string menu, string mainClass, string mainContent, string title)
         {
             StringBuilder sb = new StringBuilder(snips["index"]);
             // Menu state
@@ -78,6 +86,8 @@ namespace SiteBuilder
             else sb.Replace("{{navFilesClass}}", "");
             if (menu == "about") sb.Replace("{{navAboutClass}}", "selected");
             else sb.Replace("{{navAboutClass}}", "");
+            // Title
+            sb.Replace("{{title}}", esc(title));
             // Main
             sb.Replace("{{mainClass}}", mainClass);
             sb.Replace("{{mainContent}}", mainContent);

@@ -49,7 +49,7 @@ namespace SiteBuilder
                 }
                 if (e.FullPath.EndsWith(".js"))
                 {
-                    copyScripts();
+                    copyFiles();
                     Console.WriteLine("Copied scripts.");
                 }
             }
@@ -59,10 +59,14 @@ namespace SiteBuilder
             }
         }
 
-        static void copyScripts()
+        static void copyFiles()
         {
             var di = new DirectoryInfo("./src");
             foreach (var fi in di.GetFiles("*.js"))
+            {
+                File.Copy(fi.FullName, Path.Combine("../_www", fi.Name), true);
+            }
+            foreach (var fi in di.GetFiles("favicon*.*"))
             {
                 File.Copy(fi.FullName, Path.Combine("../_www", fi.Name), true);
             }
@@ -79,7 +83,7 @@ namespace SiteBuilder
                 builder = new Builder(data);
                 builder.Build();
                 buildStyle();
-                copyScripts();
+                copyFiles();
                 if (!serve) return;
                 watcher = new FileSystemWatcher("./src");
                 watcher.IncludeSubdirectories = true;

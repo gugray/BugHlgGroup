@@ -151,6 +151,7 @@
     <Content Include="src\fileItem.html" />
     <Content Include="src\files.html" />
     <Content Include="src\filesFolder.html" />
+    <Content Include="src\about.html" />
     <Content Include="src\threadMessage.html" />
     <Content Include="src\thread.html" />
     <Content Include="src\message.html" />

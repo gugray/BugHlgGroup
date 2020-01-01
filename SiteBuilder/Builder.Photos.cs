@@ -86,7 +86,8 @@ namespace SiteBuilder
             if (nextSlug == null) sbAlbum.Replace("{{next}}", "<span>Next</span>");
             else sbAlbum.Replace("{{next}}", "<a href='/photos/" + nextSlug + "'>Next</a>");
             // Write page
-            string strPage = getPage("photos", "album", sbAlbum.ToString());
+            string title = string.Format(titlePhotoPage, album.AlbumName);
+            string strPage = getPage("photos", "album", sbAlbum.ToString(), title);
             File.WriteAllText(Path.Combine(path, "index.html"), strPage);
         }
 
@@ -103,7 +104,7 @@ namespace SiteBuilder
             // Items
             sbAlbums.Replace("{{items}}", strAlbums);
             // Page; save
-            string strPage = getPage("photos", "albumList", sbAlbums.ToString());
+            string strPage = getPage("photos", "albumList", sbAlbums.ToString(), titlePhotosPage);
             string fn = Path.Combine(path, "index.html");
             File.WriteAllText(fn, strPage, Encoding.UTF8);
             // Build individual albums

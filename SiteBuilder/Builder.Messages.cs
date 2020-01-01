@@ -45,7 +45,8 @@ namespace SiteBuilder
             // Items
             sbList.Replace("{{items}}", strListItems);
             // Page
-            string strPage = getPage("messages", "messageList", sbList.ToString());
+            string title = string.Format(titleMessagesPage, page);
+            string strPage = getPage("messages", "messageList", sbList.ToString(), title);
             // Save in regular location
             string path = Path.Combine(wwwRoot, "messages/page-" + page);
             Directory.CreateDirectory(path);
@@ -54,9 +55,11 @@ namespace SiteBuilder
             // If it's page 1, then we also store in /messages and /
             if (page == 1)
             {
-                path = wwwRoot;
+                path = Path.Combine(wwwRoot, "messages");
                 File.WriteAllText(Path.Combine(path, "index.html"), strPage, Encoding.UTF8);
-                path = Path.Combine(path, "messages");
+                // Home gets different title
+                strPage = getPage("messages", "messageList", sbList.ToString(), titleHome);
+                path = wwwRoot;
                 File.WriteAllText(Path.Combine(path, "index.html"), strPage, Encoding.UTF8);
             }
         }
@@ -131,7 +134,8 @@ namespace SiteBuilder
             }
 
             // Assemble page
-            string strPage = getPage("messages", "messageView", sb.ToString());
+            string title = string.Format(titleMessagePage, email.Subject);
+            string strPage = getPage("messages", "messageView", sb.ToString(), title);
 
             // Save in regular location
             string path = Path.Combine(wwwRoot, "messages/" + email.MsgId);
@@ -179,7 +183,8 @@ namespace SiteBuilder
             // Items
             sbList.Replace("{{items}}", strListItems);
             // Page
-            string strPage = getPage("threads", "threadsList", sbList.ToString());
+            string title = string.Format(titleThreadsPage, page);
+            string strPage = getPage("threads", "threadsList", sbList.ToString(), title);
             // Save in regular location
             string path = Path.Combine(wwwRoot, "threads/page-" + page);
             Directory.CreateDirectory(path);
@@ -237,7 +242,8 @@ namespace SiteBuilder
             sb.Replace("{{messages}}", sbMessages.ToString());
 
             // Assemble page
-            string strPage = getPage("threads", "threadView", sb.ToString());
+            string title = string.Format(titleThreadPage, thread.FirstMessage.Subject);
+            string strPage = getPage("threads", "threadView", sb.ToString(), title);
 
             // Save in regular location
             string path = Path.Combine(wwwRoot, "threads/" + thread.ThreadId);
