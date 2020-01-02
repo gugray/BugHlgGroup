@@ -20,7 +20,7 @@ namespace SiteBuilder
             // Page; save
             StringBuilder sbFiles = new StringBuilder(snips["files"]);
             sbFiles.Replace("{{items}}", sbList.ToString());
-            string strPage = getPage("files", "files", sbFiles.ToString(), titleFilesPage);
+            string strPage = getPage("files", "files", sbFiles.ToString(), titleFilesPage, "files");
             string fn = Path.Combine(path, "index.html");
             File.WriteAllText(fn, strPage, Encoding.UTF8);
         }

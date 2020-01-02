@@ -72,7 +72,7 @@ namespace SiteBuilder
             }
         }
 
-        string getPage(string menu, string mainClass, string mainContent, string title)
+        string getPage(string menu, string mainClass, string mainContent, string title, string relPath)
         {
             StringBuilder sb = new StringBuilder(snips["index"]);
             // Menu state
@@ -86,8 +86,9 @@ namespace SiteBuilder
             else sb.Replace("{{navFilesClass}}", "");
             if (menu == "about") sb.Replace("{{navAboutClass}}", "selected");
             else sb.Replace("{{navAboutClass}}", "");
-            // Title
-            sb.Replace("{{title}}", esc(title));
+            // Title, relative path
+            sb.Replace("{{title}}", esc(title).Replace("\"", "&quot;"));
+            sb.Replace("{{relpath}}", relPath);
             // Main
             sb.Replace("{{mainClass}}", mainClass);
             sb.Replace("{{mainContent}}", mainContent);

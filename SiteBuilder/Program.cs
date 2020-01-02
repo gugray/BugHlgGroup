@@ -70,6 +70,10 @@ namespace SiteBuilder
             {
                 File.Copy(fi.FullName, Path.Combine("../_www", fi.Name), true);
             }
+            foreach (var fi in di.GetFiles("*.png"))
+            {
+                File.Copy(fi.FullName, Path.Combine("../_www", fi.Name), true);
+            }
         }
 
 

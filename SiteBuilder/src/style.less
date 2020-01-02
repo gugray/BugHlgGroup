@@ -66,7 +66,7 @@ header.page {
 }
 
 footer.page {
-  text-align: center; padding-top: 0px; height: @footerHeight; position: absolute; bottom: 0;
+  text-align: center; padding-top: 0px; height: @footerHeight; position: absolute; bottom: 0; left: 0; right: 0;
   small { font-size: @fntSizeSmaller; }
 }
 
@@ -285,8 +285,9 @@ footer.album {
   header.message,
   header.thread,
   header.album {
-    nav { position: relative; clear: both; float: right; }
+    nav { position: relative; clear: both; float: right; margin-top: @bodyPadding; }
   }
+  header.message, header.thread { border-bottom: none; }
   footer.list,
   footer.message,
   footer.thread,
@@ -294,6 +295,10 @@ footer.album {
     height: auto;
     nav { position: relative; clear: both; float: right; }
     .threadLink { position: relative; clear: both; float: left; }
+  }
+  footer.message, footer.thread { 
+    border-top: none; 
+    nav, .threadLink { clear: none; }
   }
   .brk::before { content: "\A";  }
   .brk { white-space: pre; }
