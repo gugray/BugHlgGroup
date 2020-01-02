@@ -143,6 +143,7 @@
     <None Include="src\style.less" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="index-build.js" />
     <Content Include="src\album.html" />
     <Content Include="src\albumItem.html" />
     <Content Include="src\albumPhoto.html" />

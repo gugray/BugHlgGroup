@@ -4,22 +4,39 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using Newtonsoft.Json;
 
 namespace SiteBuilder
 {
     class GroupData
     {
+        class LunrDoc
+        {
+            public int id;
+            public string subject;
+            public string body;
+            public string authorName;
+            public string date;
+        }
+        readonly List<LunrDoc> lunrDocs = new List<LunrDoc>();
+
         public readonly Dictionary<int, Email> IdToEmail = new Dictionary<int, Email>();
         public readonly List<EmailThread> Threads = new List<EmailThread>();
         public readonly List<Album> Albums;
         public readonly List<GroupFileFolder> Files;
 
-        public GroupData(string path)
+        public GroupData(string path, string lunrJsonPath)
         {
+            // Emails
             parseEmails(path);
+            string lunrJson = JsonConvert.SerializeObject(lunrDocs);
+            File.WriteAllText(lunrJsonPath, lunrJson, Encoding.UTF8);
+            // Put together threads
             collectThreads();
+            // Photos
             PhotoParser photoParser = new PhotoParser(Path.Combine(path, "photos"));
             Albums = photoParser.ParseAlbums();
+            // Files
             FilesParser filesParser = new FilesParser(Path.Combine(path, "files"));
             Files = filesParser.ParseFiles();
         }
@@ -35,6 +52,14 @@ namespace SiteBuilder
                 var email = emailParser.Parse(json);
                 if (email == null) continue;
                 IdToEmail[email.MsgId] = email;
+                lunrDocs.Add(new LunrDoc
+                {
+                    id = email.MsgId,
+                    subject = email.Subject,
+                    body = email.TextBody,
+                    authorName = email.AuthorName,
+                    date = email.EasternDateTime.ToString("MMMM d, yyyy") + " " + email.EasternDateTime.ToShortTimeString(),
+                });
             }
         }
 

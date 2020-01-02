@@ -74,6 +74,10 @@ namespace SiteBuilder
             {
                 File.Copy(fi.FullName, Path.Combine("../_www", fi.Name), true);
             }
+            foreach (var fi in di.GetFiles("*.json"))
+            {
+                File.Copy(fi.FullName, Path.Combine("../_www", fi.Name), true);
+            }
         }
 
 
@@ -83,7 +87,7 @@ namespace SiteBuilder
             {
                 bool serve = false;
                 if (args.Length > 0 && args[0] == "serve") serve = true;
-                data = new GroupData("../_data");
+                data = new GroupData("../_data", "src/lunr-data.json");
                 builder = new Builder(data);
                 builder.Build();
                 buildStyle();

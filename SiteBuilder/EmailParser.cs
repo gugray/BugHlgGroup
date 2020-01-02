@@ -48,6 +48,7 @@ namespace SiteBuilder
                 NextInTopic = jMsg.nextInTopic,
             };
             if (res.AuthorName == "") res.AuthorName = res.From.Substring(0, res.From.IndexOf('@')).Replace("&lt;", "");
+            res.AuthorName = resolveEntities(res.AuthorName);
             if (res.Subject == "") res.Subject = "(No subject)";
             res.Subject = resolveEntities(res.Subject);
             string rawEmail = jMsg.rawEmail.ToString();

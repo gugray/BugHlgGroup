@@ -37,7 +37,6 @@ namespace SiteBuilder
 
         public void Build()
         {
-            // DBG
             recursiveDelete(new DirectoryInfo(wwwRoot));
             buildMessageList();
             buildMessages();
