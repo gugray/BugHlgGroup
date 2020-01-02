@@ -44,6 +44,7 @@ namespace SiteBuilder
             buildThreads();
             buildPhotos();
             buildFiles();
+            buildContent();
         }
 
         static string esc(string str)
@@ -71,7 +72,7 @@ namespace SiteBuilder
             }
         }
 
-        string getPage(string menu, string mainClass, string mainContent, string title, string relPath)
+        string getPage(string menu, string mainClass, string mainContent, string title, string relPath, bool noIndex = false)
         {
             StringBuilder sb = new StringBuilder(snips["index"]);
             // Menu state
@@ -88,6 +89,9 @@ namespace SiteBuilder
             // Title, relative path
             sb.Replace("{{title}}", esc(title).Replace("\"", "&quot;"));
             sb.Replace("{{relpath}}", relPath);
+            // Noindex
+            if (noIndex) sb.Replace("{{othermeta}}", "<meta name='robots' content='noindex,nofollow' />");
+            else sb.Replace("{{othermeta}}", "");
             // Main
             sb.Replace("{{mainClass}}", mainClass);
             sb.Replace("{{mainContent}}", mainContent);
@@ -127,7 +131,24 @@ namespace SiteBuilder
             if (kbytes < 1000) return kbytes + " KB";
             int k = kbytes / 1000;
             return k + "," + (kbytes - k * 1000).ToString() + " KB";
+        }
 
+        void buildContent()
+        {
+            string[] pages = new string[] { "about", "publisher" };
+            foreach (var pg in pages)
+            {
+                // Create regular location
+                string path = Path.Combine(wwwRoot, pg);
+                Directory.CreateDirectory(path);
+                // Page; save
+                StringBuilder sbContent = new StringBuilder(snips[pg]);
+                bool noIndex = pg == "publisher";
+                string strPage = getPage(pg, "content", sbContent.ToString(), titleFilesPage, pg, noIndex);
+                string fn = Path.Combine(path, "index.html");
+                File.WriteAllText(fn, strPage, Encoding.UTF8);
+
+            }
         }
     }
 }

@@ -71,6 +71,8 @@ header.page {
 footer.page {
   text-align: center; padding-top: 0px; height: @footerHeight; position: absolute; bottom: 0; left: 0; right: 0;
   small { font-size: @fntSizeSmaller; }
+  //a { text-decoration: none; color: @clrFillDark; }
+  a { color: @clrFill; text-decoration: none; }
 }
 
 nav.page {
@@ -259,6 +261,12 @@ footer.album {
 }
 
 .brk::before { content: " · ";  }
+
+.page.content {
+  h2 { margin-bottom: 20px; }
+  p { margin-bottom: 10px; }
+  a { color: @clrFill; text-decoration: none; &:hover { text-decoration: underline;  } }
+}
 
 // Responsive layout
 // Large iPhones: 414; iPhone 7: 375

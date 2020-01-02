@@ -1,6 +1,8 @@
 _data
 _www
 
+publisher.html
+
 #Ignore thumbnails created by Windows
 Thumbs.db
 #Ignore files built by Visual Studio
