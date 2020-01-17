@@ -23,6 +23,7 @@ namespace SiteBuilder
             string strPage = getPage("files", "files", sbFiles.ToString(), titleFilesPage, "files");
             string fn = Path.Combine(path, "index.html");
             File.WriteAllText(fn, strPage, Encoding.UTF8);
+            paths.Add("files");
         }
 
         string writeFolder(GroupFileFolder folder)

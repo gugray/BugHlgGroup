@@ -50,6 +50,7 @@ namespace SiteBuilder
             string strPage = getPage("messages", "messageList", sbList.ToString(), title, relPath);
             // Save in regular location
             string path = Path.Combine(wwwRoot, "messages/page-" + page);
+            paths.Add("messages/page-" + page);
             Directory.CreateDirectory(path);
             string fn = Path.Combine(path, "index.html");
             File.WriteAllText(fn, strPage, Encoding.UTF8);
@@ -57,10 +58,12 @@ namespace SiteBuilder
             if (page == 1)
             {
                 path = Path.Combine(wwwRoot, "messages");
+                paths.Add("messages");
                 File.WriteAllText(Path.Combine(path, "index.html"), strPage, Encoding.UTF8);
                 // Home gets different title
                 strPage = getPage("messages", "messageList", sbList.ToString(), titleHome, "messages");
                 path = wwwRoot;
+                paths.Add("");
                 File.WriteAllText(Path.Combine(path, "index.html"), strPage, Encoding.UTF8);
             }
         }
@@ -140,6 +143,7 @@ namespace SiteBuilder
 
             // Save in regular location
             string path = Path.Combine(wwwRoot, "messages/" + email.MsgId);
+            paths.Add("messages/" + email.MsgId);
             Directory.CreateDirectory(path);
             string fn = Path.Combine(path, "index.html");
             File.WriteAllText(fn, strPage, Encoding.UTF8);
@@ -188,6 +192,7 @@ namespace SiteBuilder
             string strPage = getPage("threads", "threadsList", sbList.ToString(), title, "threads/page-" + page);
             // Save in regular location
             string path = Path.Combine(wwwRoot, "threads/page-" + page);
+            paths.Add("threads/page-" + page);
             Directory.CreateDirectory(path);
             string fn = Path.Combine(path, "index.html");
             File.WriteAllText(fn, strPage, Encoding.UTF8);
@@ -195,6 +200,7 @@ namespace SiteBuilder
             if (page == 1)
             {
                 path = Path.Combine(wwwRoot, "threads");
+                paths.Add("threads");
                 File.WriteAllText(Path.Combine(path, "index.html"), strPage, Encoding.UTF8);
             }
         }
@@ -248,6 +254,7 @@ namespace SiteBuilder
 
             // Save in regular location
             string path = Path.Combine(wwwRoot, "threads/" + thread.ThreadId);
+            paths.Add("threads/" + thread.ThreadId);
             Directory.CreateDirectory(path);
             string fn = Path.Combine(path, "index.html");
             File.WriteAllText(fn, strPage, Encoding.UTF8);

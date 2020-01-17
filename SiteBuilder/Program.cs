@@ -78,6 +78,10 @@ namespace SiteBuilder
             {
                 File.Copy(fi.FullName, Path.Combine("../_www", fi.Name), true);
             }
+            foreach (var fi in di.GetFiles("robots.txt"))
+            {
+                File.Copy(fi.FullName, Path.Combine("../_www", fi.Name), true);
+            }
         }
 
 

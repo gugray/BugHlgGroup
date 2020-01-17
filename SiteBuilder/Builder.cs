@@ -9,6 +9,7 @@ namespace SiteBuilder
     partial class Builder
     {
         const string wwwRoot = "../_www";
+        const string baseUrl = "https://bug-hlg.jealousmarkup.xyz/";
         const int pageSize = 100;
         const int tinyThumbHeight = 48;
         const int tinyThumbQuality = 90;
@@ -24,6 +25,7 @@ namespace SiteBuilder
         readonly ImageResizer resizer = new ImageResizer(tinyThumbQuality);
         readonly GroupData data;
         readonly Dictionary<string, string> snips = new Dictionary<string, string>();
+        readonly List<string> paths = new List<string>();
 
         public Builder(GroupData data)
         {
@@ -45,6 +47,7 @@ namespace SiteBuilder
             buildPhotos();
             buildFiles();
             buildContent();
+            writeSitemap();
         }
 
         static string esc(string str)
@@ -135,6 +138,7 @@ namespace SiteBuilder
 
         void buildContent()
         {
+            paths.Add("about");
             string[] pages = new string[] { "about", "publisher" };
             foreach (var pg in pages)
             {
@@ -147,7 +151,20 @@ namespace SiteBuilder
                 string strPage = getPage(pg, "content", sbContent.ToString(), titleFilesPage, pg, noIndex);
                 string fn = Path.Combine(path, "index.html");
                 File.WriteAllText(fn, strPage, Encoding.UTF8);
+            }
+        }
 
+        void writeSitemap()
+        {
+            var fn = Path.Combine(wwwRoot, "sitemap.txt");
+            using (FileStream fs = new FileStream(fn, FileMode.Create, FileAccess.ReadWrite))
+            using (StreamWriter sw = new StreamWriter(fs, Encoding.ASCII))
+            {
+                sw.NewLine = "\n";
+                foreach (var x in paths)
+                {
+                    sw.WriteLine(baseUrl + x);
+                }
             }
         }
     }

@@ -154,6 +154,7 @@
     <Content Include="src\filesFolder.html" />
     <Content Include="src\about.html" />
     <Content Include="src\publisher.html" />
+    <Content Include="src\robots.txt" />
     <Content Include="src\threadMessage.html" />
     <Content Include="src\thread.html" />
     <Content Include="src\message.html" />

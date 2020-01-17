@@ -49,6 +49,7 @@ namespace SiteBuilder
         {
             // Create album folder
             string path = Path.Combine(photosPath, album.Slug);
+            paths.Add("photos/" + album.Slug);
             Directory.CreateDirectory(path);
             // For each photo: copy file; build list
             StringBuilder sbList = new StringBuilder();
@@ -95,6 +96,7 @@ namespace SiteBuilder
         {
             // Create regular location
             string path = Path.Combine(wwwRoot, "photos");
+            paths.Add("photos");
             Directory.CreateDirectory(path);
             // Albums list
             string strAlbums = "";
